@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public class Control : MonoBehaviour
 {
     CharacterController _controller;
     Animator _animator;
@@ -22,7 +22,7 @@ public class CharacterController : MonoBehaviour
     Vector3 _playerGravity;
 
     [SerializeField] Transform _sensorPosition;
-    [SerializeField] float _sensorRadius;
+    [SerializeField] float _sensorRadius = 0.2f;
     [SerializeField] LayerMask _groundLayer;
     bool _isGrounded;
 
@@ -39,8 +39,8 @@ public class CharacterController : MonoBehaviour
         _horizontal = Input.GetAxisRaw("Horizontal");
         _vertical = Input.GetAxisRaw("Vertical");
         
-        Jump();
         Movement();
+        Jump();
     }
 
     void Movement()
@@ -53,11 +53,11 @@ public class CharacterController : MonoBehaviour
 
          if(direction != Vector3.zero)
             {
-                float targetAngle = Mathf.Atan2 (direction.x, direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y;
+                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y;
                 float _smoothDampAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, _turnSmoothTime);
-                transform.rotation = Quaternion.Euler (0, _smoothDampAngle, 0);
+                transform.rotation = Quaternion.Euler(0, _smoothDampAngle, 0);
 
-                Vector3 moveDirection = Quaternion.Euler (0, _targetAngle, 0) * Vector3.forward;
+                Vector3 moveDirection = Quaternion.Euler(0, _targetAngle, 0) * Vector3.forward;
                 _controller.Move(moveDirection.normalized * _playerSpeed * Time.deltaTime);
         }
 
