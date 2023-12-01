@@ -11,10 +11,14 @@ public class CharacterController : MonoBehaviour
     float _horizontal;
     float _vertical; 
     
-    [SerializeField] float _playerSpeed = 2;
-    [SerializeField] float _jumpHeight = 2; 
+    [SerializeField] float _playerSpeed = 2.0f;
+    [SerializeField] float _jumpHeight = 1.0f; 
 
-    float _gravity;
+    [SerializeField] float _turnSmoothTime;
+    [SerializeField] float _turnSmoothVelocity;
+    float _targetAngle;
+
+    float _gravity = -9.81f;
     Vector3 _playerGravity;
 
     [SerializeField] Transform _sensorPosition;
@@ -26,7 +30,7 @@ public class CharacterController : MonoBehaviour
     {
         _controller = GetComponent<CharacterController>();
         _animator = GetComponentInChildren<Animator>();
-        _camera = main.transform.Camera;
+        _camera = Camera.main.transform;
     }
 
     // Update is called once per frame
@@ -45,16 +49,16 @@ public class CharacterController : MonoBehaviour
 
         _animator.SetFloat("VelX", 0);
 
-        _animator.SetFloat ("VelZ", direction.magnitude);
+        _animator.SetFloat("VelZ", direction.magnitude);
 
          if(direction != Vector3.zero)
             {
                 float targetAngle = Mathf.Atan2 (direction.x, direction.z) * Mathf.Rad2Deg + _camera.eulerAngles.y;
-                float smoothDampAngle = Mathf.SmoothDamp(transform.position.y, target.position.y, _turnSmoothVelocity, _turnSmoothTime);
-                transform.rotation = Quaternion.Euler (0, smoothDamp, 0);
+                float _smoothDampAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, _turnSmoothTime);
+                transform.rotation = Quaternion.Euler (0, _smoothDampAngle, 0);
 
-                Vector3 moveDirection = Quaternion.Euler (0, targetAngle, 0) * Vector3. forward;
-                _controller.Move (moveDirection.normalized * _playerSpeed * Time.deltaTime);
+                Vector3 moveDirection = Quaternion.Euler (0, _targetAngle, 0) * Vector3.forward;
+                _controller.Move(moveDirection.normalized * _playerSpeed * Time.deltaTime);
         }
 
     }
@@ -75,6 +79,6 @@ public class CharacterController : MonoBehaviour
                 }
             
         _playerGravity.y += _gravity * Time.deltaTime;
-        _controller.Move (_playerGravity * Time.deltaTime);
+        _controller.Move(_playerGravity * Time.deltaTime);
     }
 }

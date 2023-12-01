@@ -194,7 +194,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 456895}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.33445156, y: -0.000000016215521, z: 0.0000000057547025, w: 0.942413}
+  m_LocalRotation: {x: 0.33445156, y: 0.000000016215514, z: -0.0000000057547, w: 0.942413}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -514,7 +514,7 @@ MonoBehaviour:
   _sensorRadius: 0
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
 --- !u!1 &548135499
 GameObject:
   m_ObjectHideFlags: 3
